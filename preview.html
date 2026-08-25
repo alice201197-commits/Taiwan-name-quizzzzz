@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>台灣菜市場名大挑戰</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        sans-serif;
+
+    background: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 35px 20px 60px;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 8px;
+    font-size: 34px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   完成率
+========================= */
+
+.progress-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+
+    text-align: center;
+}
+
+.progress-title {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.progress-number {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    margin-top: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+
+    width: 0%;
+
+    background: #78c9dc;
+
+    transition: width 0.3s ease;
+}
+
+
+/* =========================
+   輸入區
+========================= */
+
+.input-box {
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+
+    margin-bottom: 25px;
+}
+
+.input-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+.input-row {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.name-input {
+
+    flex: 1;
+
+    padding: 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+
+    outline: none;
+}
+
+.name-input:focus {
+
+    border-color: #78c9dc;
+}
+
+.submit-btn {
+
+    border: none;
+
+    background: #222;
+
+    color: white;
+
+    padding: 14px 25px;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+
+    opacity: 0.85;
+}
+
+.hint {
+
+    color: #999;
+
+    font-size: 14px;
+
+    margin-top: 10px;
+}
+
+
+/* =========================
+   年代結果
+========================= */
+
+.results {
+
+    display: grid;
+
+    gap: 15px;
+}
+
+
+/* 每一個年代 */
+
+.decade-card {
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.decade-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+
+    text-align: center;
+}
+
+
+/* 男生女生 */
+
+.gender-section {
+
+    margin-bottom: 12px;
+}
+
+.gender-label {
+
+    font-size: 14px;
+
+    color: #777;
+
+    margin-bottom: 8px;
+}
+
+
+/* 格子 */
+
+.slots {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+}
+
+.slot {
+
+    height: 48px;
+
+    border-radius: 9px;
+
+    background: #f1f1f1;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 14px;
+
+    color: #aaa;
+
+    transition: all 0.3s ease;
+}
+
+
+/* 男生答對 */
+
+.slot.male-correct {
+
+    background: #9edceb;
+
+    color: #245c68;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 2px 6px rgba(120,200,220,0.3);
+}
+
+
+/* 女生答對 */
+
+.slot.female-correct {
+
+    background: #f5c9d5;
+
+    color: #774653;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 2px 6px rgba(245,190,205,0.3);
+}
+
+
+/* =========================
+   已輸入名字
+========================= */
+
+.answer-history {
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    margin-top: 25px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.history-title {
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    margin-bottom: 12px;
+}
+
+.history-list {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.history-name {
+
+    background: #f1f1f1;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   按鈕
+========================= */
+
+.button-area {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.finish-btn,
+.reset-btn {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+.finish-btn {
+
+    background: #222;
+
+    color: white;
+}
+
+.reset-btn {
+
+    background: #eee;
+
+    color: #333;
+}
+
+
+/* =========================
+   最終答案
+========================= */
+
+#finalResult {
+
+    display: none;
+
+    background: white;
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.final-title {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+.final-decade {
+
+    margin-bottom: 25px;
+}
+
+.final-decade-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+.final-gender {
+
+    margin: 8px 0;
+
+    line-height: 1.8;
+}
+
+.final-male {
+
+    color: #3f91a5;
+}
+
+.final-female {
+
+    color: #b66a7d;
+}
+
+
+/* =========================
+   手機版
+========================= */
+
+@media (max-width: 600px) {
+
+    .container {
+
+        padding: 25px 15px 50px;
+    }
+
+    h1 {
+
+        font-size: 28px;
+    }
+
+    .input-row {
+
+        flex-direction: column;
+    }
+
+    .submit-btn {
+
+        width: 100%;
+    }
+
+    .slot {
+
+        height: 45px;
+
+        font-size: 13px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>台灣菜市場名大挑戰</h1>
+
+    <div class="subtitle">
+        輸入一個名字，看看它曾經在哪些年代出現在菜市場名排行榜！
+    </div>
+
+
+    <!-- =========================
+         完成率
+    ========================== -->
+
+    <div class="progress-box">
+
+        <div class="progress-title">
+            目前完成率
+        </div>
+
+        <div
+            class="progress-number"
+            id="progressNumber">
+            0%
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         輸入名字
+    ========================== -->
+
+    <div class="input-box">
+
+        <div class="input-title">
+            輸入名字
+        </div>
+
+        <div class="input-row">
+
+            <input
+                id="nameInput"
+                class="name-input"
+                type="text"
+                placeholder="例如：志明"
+                autocomplete="off"
+            >
+
+            <button
+                class="submit-btn"
+                onclick="submitName()">
+
+                提交
+
+            </button>
+
+        </div>
+
+        <div class="hint">
+            輸入名字後按「提交」，系統會自動搜尋所有年代。
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         年代結果
+    ========================== -->
+
+    <div
+        id="results"
+        class="results">
+    </div>
+
+
+    <!-- =========================
+         已輸入名字
+    ========================== -->
+
+    <div
+        id="answerHistory"
+        class="answer-history"
+        style="display:none;">
+
+        <div class="history-title">
+            已提交的名字
+        </div>
+
+        <div
+            id="historyList"
+            class="history-list">
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         按鈕
+    ========================== -->
+
+    <div class="button-area">
+
+        <button
+            class="finish-btn"
+            onclick="finishQuiz()">
+
+            交卷
+
+        </button>
+
+        <button
+            class="reset-btn"
+            onclick="resetQuiz()">
+
+            重新開始
+
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         最終答案
+    ========================== -->
+
+    <div id="finalResult">
+
+        <div class="final-title">
+            📋 所有年代完整答案
+        </div>
+
+        <div id="finalAnswers">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/*
+====================================================
+資料區
+====================================================
+
+每個年代：
+
+male = 男生前 3 名
+female = 女生前 3 名
+
+如果之後你要放到 TOP 10，
+
+直接繼續往陣列裡面增加名字即可。
+
+例如：
+
+male: [
+    "志明",
+    "志成",
+    "文雄",
+    "國華",
+    "建國",
+    ...
+]
+
+====================================================
+*/
+
+
+const quizData = {
+
+    "40-49": {
+
+        male: [
+            "金龍",
+            "進財",
+            "榮華"
+        ],
+
+        female: [
+            "麗華",
+            "秀琴",
+            "秀美"
+        ]
+
+    },
+
+
+    "50-59": {
+
+        male: [
+            "志明",
+            "志成",
+            "文雄"
+        ],
+
+        female: [
+            "淑芬",
+            "美玲",
+            "淑惠"
+        ]
+
+    },
+
+
+    "60-69": {
+
+        male: [
+            "志偉",
+            "志明",
+            "建宏"
+        ],
+
+        female: [
+            "淑芬",
+            "雅惠",
+            "淑娟"
+        ]
+
+    },
+
+
+    "70-79": {
+
+        male: [
+            "家豪",
+            "志豪",
+            "志偉"
+        ],
+
+        female: [
+            "雅婷",
+            "怡君",
+            "雅雯"
+        ]
+
+    },
+
+
+    "80-89": {
+
+        male: [
+            "家豪",
+            "冠宇",
+            "冠廷"
+        ],
+
+        female: [
+            "雅婷",
+            "怡君",
+            "怡婷"
+        ]
+
+    },
+
+
+    "90-99": {
+
+        male: [
+            "承恩",
+            "承翰",
+            "冠廷"
+        ],
+
+        female: [
+            "宜蓁",
+            "欣妤",
+            "詩涵"
+        ]
+
+    },
+
+
+    "100-109": {
+
+        male: [
+            "承恩",
+            "宥廷",
+            "品睿"
+        ],
+
+        female: [
+            "品妍",
+            "子晴",
+            "詠晴"
+        ]
+
+    }
+
+};
+
+
+/*
+====================================================
+系統變數
+====================================================
+*/
+
+
+/*
+
+記錄玩家已經輸入過哪些名字
+
+*/
+
+let submittedNames = [];
+
+
+/*
+
+總答案數量
+
+7 個年代 × 6 格
+
+= 42 格
+
+*/
+
+const totalAnswers =
+    Object.keys(quizData).length * 6;
+
+
+/*
+====================================================
+初始化畫面
+====================================================
+*/
+
+function initialize() {
+
+    createDecadeCards();
+
+    updateProgress();
+
+}
+
+
+/*
+====================================================
+建立年代卡片
+====================================================
+*/
+
+function createDecadeCards() {
+
+    const results =
+        document.getElementById("results");
+
+    results.innerHTML = "";
+
+
+    Object.keys(quizData).forEach(decade => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "decade-card";
+
+        card.dataset.decade =
+            decade;
+
+
+        /*
+        -------------------------------
+        男生
+        -------------------------------
+        */
+
+        let maleSlots = "";
+
+        quizData[decade].male.forEach(
+            (name, index) => {
+
+                maleSlots += `
+
+                    <div
+                        class="slot male-slot"
+                        data-gender="male"
+                        data-index="${index}">
+
+                        ${index + 1}
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        /*
+        -------------------------------
+        女生
+        -------------------------------
+        */
+
+        let femaleSlots = "";
+
+        quizData[decade].female.forEach(
+            (name, index) => {
+
+                femaleSlots += `
+
+                    <div
+                        class="slot female-slot"
+                        data-gender="female"
+                        data-index="${index}">
+
+                        ${index + 1}
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        card.innerHTML = `
+
+            <div class="decade-title">
+                民國 ${decade} 年
+            </div>
+
+
+            <div class="gender-section">
+
+                <div class="gender-label">
+                    👦 男生
+                </div>
+
+                <div class="slots male-slots">
+                    ${maleSlots}
+                </div>
+
+            </div>
+
+
+            <div class="gender-section">
+
+                <div class="gender-label">
+                    👧 女生
+                </div>
+
+                <div class="slots female-slots">
+                    ${femaleSlots}
+                </div>
+
+            </div>
+
+        `;
+
+
+        results.appendChild(card);
+
+    });
+
+}
+
+
+/*
+====================================================
+提交名字
+====================================================
+*/
+
+function submitName() {
+
+    const input =
+        document.getElementById("nameInput");
+
+    const name =
+        input.value.trim();
+
+
+    /*
+    沒有輸入
+    */
+
+    if (!name) {
+
+        alert("請先輸入名字！");
+
+        return;
+
+    }
+
+
+    /*
+    如果已經輸入過
+
+    就不重複計算
+
+    */
+
+    if (
+        submittedNames.includes(name)
+    ) {
+
+        alert("這個名字已經提交過了！");
+
+        input.value = "";
+
+        return;
+
+    }
+
+
+    /*
+    加入已提交名單
+    */
+
+    submittedNames.push(name);
+
+
+    /*
+    搜尋所有年代
+    */
+
+    let found = false;
+
+
+    Object.keys(quizData).forEach(
+        decade => {
+
+            /*
+            搜尋男生
+            */
+
+            quizData[decade].male.forEach(
+                (answer, index) => {
+
+                    if (
+                        answer === name
+                    ) {
+
+                        lightUpSlot(
+                            decade,
+                            "male",
+                            index
+                        );
+
+                        found = true;
+
+                    }
+
+                }
+            );
+
+
+            /*
+            搜尋女生
+            */
+
+            quizData[decade].female.forEach(
+                (answer, index) => {
+
+                    if (
+                        answer === name
+                    ) {
+
+                        lightUpSlot(
+                            decade,
+                            "female",
+                            index
+                        );
+
+                        found = true;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /*
+    更新完成率
+    */
+
+    updateProgress();
+
+
+    /*
+    更新歷史紀錄
+    */
+
+    updateHistory();
+
+
+    /*
+    清空輸入框
+    */
+
+    input.value = "";
+
+    input.focus();
+
+
+    /*
+    顯示結果
+
+    如果完全沒有找到
+
+    */
+
+    if (!found) {
+
+        alert(
+            `「${name}」不在目前的菜市場名資料中。`
+        );
+
+    }
+
+}
+
+
+/*
+====================================================
+讓正確答案亮起
+====================================================
+*/
+
+function lightUpSlot(
+    decade,
+    gender,
+    index
+) {
+
+    const card =
+        document.querySelector(
+            `.decade-card[data-decade="${decade}"]`
+        );
+
+
+    if (!card) {
+        return;
+    }
+
+
+    const slots =
+        card.querySelectorAll(
+            `.slot[data-gender="${gender}"]`
+        );
+
+
+    const slot =
+        slots[index];
+
+
+    if (!slot) {
+        return;
+    }
+
+
+    /*
+    男生 → 水藍色
+
+    女生 → 淡粉色
+    */
+
+    if (gender === "male") {
+
+        slot.classList.add(
+            "male-correct"
+        );
+
+    } else {
+
+        slot.classList.add(
+            "female-correct"
+        );
+
+    }
+
+
+    /*
+    顯示名字
+
+    */
+
+    slot.textContent =
+        quizData[decade][gender][index];
+
+}
+
+
+/*
+====================================================
+計算完成率
+====================================================
+*/
+
+function updateProgress() {
+
+    let correctCount = 0;
+
+
+    /*
+    計算目前亮起幾格
+
+    */
+
+    document
+        .querySelectorAll(
+            ".slot.male-correct, .slot.female-correct"
+        )
+        .forEach(() => {
+
+            correctCount++;
+
+        });
+
+
+    const percentage =
+        Math.round(
+            correctCount /
+            totalAnswers *
+            100
+        );
+
+
+    document
+        .getElementById("progressNumber")
+        .textContent =
+        `${percentage}%`;
+
+
+    document
+        .getElementById("progressFill")
+        .style.width =
+        `${percentage}%`;
+
+}
+
+
+/*
+====================================================
+顯示已輸入名字
+====================================================
+*/
+
+function updateHistory() {
+
+    const box =
+        document.getElementById(
+            "answerHistory"
+        );
+
+    const list =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    box.style.display =
+        "block";
+
+
+    list.innerHTML = "";
+
+
+    submittedNames.forEach(
+        name => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "history-name";
+
+            item.textContent =
+                name;
+
+            list.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/*
+====================================================
+交卷
+====================================================
+*/
+
+function finishQuiz() {
+
+    const finalResult =
+        document.getElementById(
+            "finalResult"
+        );
+
+    const finalAnswers =
+        document.getElementById(
+            "finalAnswers"
+        );
+
+
+    finalAnswers.innerHTML = "";
+
+
+    /*
+    計算完成率
+    */
+
+    let correctCount = 0;
+
+
+    document
+        .querySelectorAll(
+            ".slot.male-correct, .slot.female-correct"
+        )
+        .forEach(() => {
+
+            correctCount++;
+
+        });
+
+
+    const percentage =
+        Math.round(
+            correctCount /
+            totalAnswers *
+            100
+        );
+
+
+    /*
+    顯示所有年代答案
+    */
+
+    Object.keys(quizData).forEach(
+        decade => {
+
+            const section =
+                document.createElement(
+                    "div"
+                );
+
+            section.className =
+                "final-decade";
+
+
+            const maleAnswers =
+                quizData[decade].male
+                .join("、");
+
+
+            const femaleAnswers =
+                quizData[decade].female
+                .join("、");
+
+
+            section.innerHTML = `
+
+                <div class="final-decade-title">
+
+                    民國 ${decade} 年
+
+                </div>
+
+
+                <div class="final-gender final-male">
+
+                    👦 男生：
+                    ${maleAnswers}
+
+                </div>
+
+
+                <div class="final-gender final-female">
+
+                    👧 女生：
+                    ${femaleAnswers}
+
+                </div>
+
+            `;
+
+
+            finalAnswers.appendChild(
+                section
+            );
+
+        }
+    );
+
+
+    /*
+    最終完成率
+
+    */
+
+    const score =
+        document.createElement("div");
+
+    score.style.textAlign =
+        "center";
+
+    score.style.fontSize =
+        "20px";
+
+    score.style.fontWeight =
+        "bold";
+
+    score.style.marginBottom =
+        "25px";
+
+    score.textContent =
+        `你的最終完成率：${percentage}%`;
+
+
+    finalAnswers.prepend(score);
+
+
+    /*
+    顯示
+
+    */
+
+    finalResult.style.display =
+        "block";
+
+
+    finalResult.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "start"
+
+    });
+
+}
+
+
+/*
+====================================================
+重新開始
+====================================================
+*/
+
+function resetQuiz() {
+
+    const confirmReset =
+        confirm(
+            "確定要重新開始嗎？目前的答案會全部清除。"
+        );
+
+
+    if (!confirmReset) {
+        return;
+    }
+
+
+    submittedNames = [];
+
+
+    /*
+    清除所有亮起的格子
+
+    */
+
+    document
+        .querySelectorAll(
+            ".slot"
+        )
+        .forEach(slot => {
+
+            slot.classList.remove(
+                "male-correct",
+                "female-correct"
+            );
+
+        });
+
+
+    /*
+    恢復格子編號
+
+    */
+
+    Object.keys(quizData).forEach(
+        decade => {
+
+            const card =
+                document.querySelector(
+                    `.decade-card[data-decade="${decade}"]`
+                );
+
+
+            card
+                .querySelectorAll(
+                    ".male-slot"
+                )
+                .forEach(
+                    (slot, index) => {
+
+                        slot.textContent =
+                            index + 1;
+
+                    }
+                );
+
+
+            card
+                .querySelectorAll(
+                    ".female-slot"
+                )
+                .forEach(
+                    (slot, index) => {
+
+                        slot.textContent =
+                            index + 1;
+
+                    }
+                );
+
+        }
+    );
+
+
+    /*
+    清除歷史紀錄
+
+    */
+
+    document
+        .getElementById(
+            "answerHistory"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "historyList"
+        )
+        .innerHTML = "";
+
+
+    /*
+    清除最終答案
+
+    */
+
+    document
+        .getElementById(
+            "finalResult"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "finalAnswers"
+        )
+        .innerHTML = "";
+
+
+    /*
+    清除輸入框
+
+    */
+
+    document
+        .getElementById(
+            "nameInput"
+        )
+        .value = "";
+
+
+    /*
+    更新完成率
+
+    */
+
+    updateProgress();
+
+}
+
+
+/*
+====================================================
+Enter 鍵也可以提交
+====================================================
+*/
+
+document
+    .getElementById("nameInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                submitName();
+
+            }
+
+        }
+    );
+
+
+/*
+====================================================
+啟動
+====================================================
+*/
+
+initialize();
+
+</script>
+
+</body>
+</html>
